@@ -743,10 +743,7 @@ The deployment documentation covers:
 ## 20. Live Application
 
 Live URL:
-
-```text
-<TO BE ADDED AFTER DEPLOYMENT>
-```
+https://trustvault-xmuw.onrender.com
 
 The deployed application should contain seed data that allows the evaluator to test the administrator, owner, and viewer flows.
 
@@ -756,9 +753,7 @@ The deployed application should contain seed data that allows the evaluator to t
 
 Five-minute demonstration:
 
-```text
-<TO BE ADDED>
-```
+https://drive.google.com/file/d/1yTENiFUL5Q6c6SYVkmA3gkjWR_ob3cl0/view?usp=sharing
 
 The demonstration will cover:
 
@@ -893,21 +888,14 @@ along with the application source code, tests, migration files, setup scripts, a
 
 ### GitHub Repository
 
-```text
-<TO BE ADDED>
-```
+https://github.com/KavyasriSadineni811/trustvault
 
 ### Live URL
-
-```text
-<TO BE ADDED>
-```
+https://trustvault-xmuw.onrender.com
 
 ### Demo Video
 
-```text
-<TO BE ADDED>
-```
+https://drive.google.com/file/d/1yTENiFUL5Q6c6SYVkmA3gkjWR_ob3cl0/view?usp=sharing
 
 ### Documentation
 

@@ -36,7 +36,7 @@ For local development, SQLite can be used.
 Clone the public repository:
 
 ```powershell
-git clone <YOUR-GITHUB-REPOSITORY-URL>
+git clone https://github.com/KavyasriSadineni811/trustvault
 ```
 
 Move into the project directory:
@@ -328,6 +328,17 @@ A production deployment should use:
 - Appropriate logging and monitoring
 
 The exact production platform may be selected according to the deployment provider.
+### Live Deployment
+
+TrustVault is deployed on Render and is available at:
+
+https://trustvault-xmuw.onrender.com
+
+### Demo Video
+
+The five-minute demonstration video is available here:
+
+https://drive.google.com/file/d/1yTENiFUL5Q6c6SYVkmA3gkjWR_ob3cl0/view?usp=sharing
 
 ---
 
@@ -348,22 +359,22 @@ Secrets must not be committed to GitHub.
 
 Before submitting the project:
 
-- [ ] Application runs successfully
-- [ ] Database migrations are applied
-- [ ] Seed accounts are available
-- [ ] Login works
-- [ ] Owner functionality works
-- [ ] Viewer functionality works
-- [ ] Administrator functionality works
-- [ ] Document upload works
-- [ ] Document sharing works
-- [ ] Permission revocation works
-- [ ] Unauthorized access is rejected
-- [ ] Audit activity is recorded
-- [ ] Automated security tests pass
-- [ ] Production environment variables are configured
-- [ ] HTTPS is enabled
-- [ ] Live URL is accessible
+- [x] Application runs successfully
+- [x] Database migrations are applied
+- [x] Seed accounts are available
+- [x] Login works
+- [x] Owner functionality works
+- [x] Viewer functionality works
+- [x] Administrator functionality works
+- [x] Document upload works
+- [x] Document sharing works
+- [x] Permission revocation works
+- [x] Unauthorized access is rejected
+- [x] Audit activity is recorded
+- [x] Automated security tests pass
+- [x] Production environment variables are configured
+- [x] HTTPS is enabled
+- [x] Live URL is accessible
 
 ---
 
@@ -372,7 +383,7 @@ Before submitting the project:
 A fresh setup should follow this sequence:
 
 ```powershell
-git clone <YOUR-GITHUB-REPOSITORY-URL>
+git clone https://github.com/KavyasriSadineni811/trustvault
 cd trustvault
 
 python -m venv .venv
