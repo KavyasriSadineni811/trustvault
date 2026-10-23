@@ -158,7 +158,7 @@ Deletes a document.
 
 ### Access
 
-The document owner or an authorized user according to the application's permission rules.
+Document owner or a user explicitly authorized by the application's server-side permission rules.
 
 ### Security
 
@@ -193,7 +193,7 @@ A normal viewer cannot grant themselves access.
 
 ### Audit
 
-A successful permission change generates an audit record with the relevant user, document, action and timestamp.
+A successful permission change generates an audit record with the relevant user, document, action, and timestamp.
 
 ---
 
@@ -239,6 +239,9 @@ Audit records can contain:
 - Document
 - Action
 - Timestamp
+- Details
+- Previous hash
+- Record hash
 
 ### Example actions
 
@@ -251,6 +254,17 @@ DELETE
 SHARE
 REVOKE
 ```
+
+### Tamper-Evident Audit Records
+
+TrustVault supports tamper-evident audit fields using hash chaining.
+
+Each audit record can contain:
+
+- `previous_hash` — hash associated with the preceding audit record
+- `record_hash` — hash representing the current audit record
+
+These fields help provide evidence if an audit record is modified after it has been created.
 
 ---
 
@@ -369,6 +383,7 @@ The following rules apply to protected document operations:
 9. Permission changes require authorization.
 10. Revoked permissions must no longer authorize subsequent protected requests.
 11. Important document and permission operations are recorded in the audit trail.
+12. Audit records can include tamper-evident hash information.
 
 ---
 
@@ -406,3 +421,17 @@ The API was tested against unauthorized access scenarios including:
 - Role-based administrative access
 
 The automated security tests are intended to verify that a user cannot access another user's documents without an appropriate permission.
+
+The security model also verifies that protected operations perform authorization checks on the server rather than relying only on the visibility of interface elements.
+
+---
+
+# API Security Summary
+
+TrustVault's API security is based on three main principles:
+
+1. **Authentication** — users must have an authenticated session before accessing protected functionality.
+2. **Authorization** — every protected document operation checks the current user's role and/or document-level permission.
+3. **Auditability** — important document and permission operations are recorded so that system activity can be reviewed.
+
+This ensures that knowing a document URL or document ID is not sufficient to bypass the application's access-control rules.
