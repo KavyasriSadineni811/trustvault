@@ -1,0 +1,694 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>TrustVault Admin Activity</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f6fb;
+            color: #172b4d;
+        }
+
+        /* =========================
+           TOP NAVBAR
+           ========================= */
+
+        .navbar {
+            height: 94px;
+            background: #17295c;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 45px;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .brand-icon {
+            font-size: 34px;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .logged-user {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background: #e52b2b;
+            color: white;
+
+            border: none;
+            border-radius: 8px;
+
+            padding: 13px 24px;
+
+            font-size: 16px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #c91f1f;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+           ========================= */
+
+        .container {
+            width: 92%;
+            max-width: 1500px;
+
+            margin: 45px auto;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 10px 0;
+
+            font-size: 36px;
+            color: #17295c;
+        }
+
+        .page-header p {
+            margin: 0;
+
+            color: #60708d;
+            font-size: 18px;
+        }
+
+
+        /* =========================
+           ACTION BUTTONS
+           ========================= */
+
+        .actions {
+            margin-bottom: 25px;
+
+            display: flex;
+            gap: 15px;
+        }
+
+        .back-btn {
+            display: inline-block;
+
+            background: #2d6cdf;
+            color: white;
+
+            text-decoration: none;
+
+            padding: 13px 22px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #1f57c4;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================
+           MAIN CARD
+           ========================= */
+
+        .activity-card {
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 8px 25px rgba(30, 50, 90, 0.10);
+
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            margin: 0;
+
+            font-size: 25px;
+            color: #17295c;
+        }
+
+        .activity-count {
+            background: #eaf1ff;
+            color: #2864d7;
+
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           TABLE
+           ========================= */
+
+        .table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+
+            border-radius: 10px;
+            border: 1px solid #e1e7f0;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 850px;
+        }
+
+        thead {
+            background: #eaf1ff;
+        }
+
+        th {
+            padding: 17px 18px;
+
+            text-align: left;
+
+            color: #17366f;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            border-bottom: 2px solid #d5e2f8;
+        }
+
+        td {
+            padding: 17px 18px;
+
+            font-size: 15px;
+
+            color: #344563;
+
+            border-bottom: 1px solid #e8edf4;
+        }
+
+        tbody tr {
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f7faff;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* =========================
+           USER
+           ========================= */
+
+        .user-email {
+            font-weight: 600;
+            color: #17366f;
+        }
+
+
+        /* =========================
+           DOCUMENT
+           ========================= */
+
+        .document-name {
+            font-weight: 600;
+            color: #344563;
+        }
+
+
+        /* =========================
+           ACTION BADGES
+           ========================= */
+
+        .action-badge {
+            display: inline-block;
+
+            min-width: 80px;
+
+            text-align: center;
+
+            padding: 7px 13px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            letter-spacing: 0.4px;
+        }
+
+        .action-upload {
+            background: #dceaff;
+            color: #2463d4;
+        }
+
+        .action-share {
+            background: #d9f7e5;
+            color: #168447;
+        }
+
+        .action-revoke {
+            background: #ffe0e0;
+            color: #d32626;
+        }
+
+        .action-read {
+            background: #e9ddff;
+            color: #7138c4;
+        }
+
+        .action-delete {
+            background: #ffdede;
+            color: #c52222;
+        }
+
+        .action-default {
+            background: #e8edf4;
+            color: #53647d;
+        }
+
+
+        /* =========================
+           EMPTY STATE
+           ========================= */
+
+        .empty-state {
+            text-align: center;
+
+            padding: 60px 20px;
+
+            color: #718096;
+        }
+
+        .empty-icon {
+            font-size: 45px;
+
+            margin-bottom: 15px;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 8px 0;
+
+            color: #344563;
+        }
+
+        .empty-state p {
+            margin: 0;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+           ========================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                height: auto;
+
+                padding: 20px;
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+            .navbar-right {
+                width: 100%;
+
+                justify-content: space-between;
+            }
+
+            .container {
+                width: 94%;
+
+                margin: 30px auto;
+            }
+
+            .page-header h1 {
+                font-size: 28px;
+            }
+
+            .activity-card {
+                padding: 18px;
+            }
+
+            .card-header {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+         ========================= -->
+
+    <header class="navbar">
+
+        <div class="brand">
+
+            <span class="brand-icon">🔐</span>
+
+            <span>TrustVault</span>
+
+        </div>
+
+
+        <div class="navbar-right">
+
+            <span class="logged-user">
+                Logged in as:
+                <strong>{{ current_user.email }}</strong>
+            </span>
+
+
+            <!-- Logout -->
+
+            <form
+                method="POST"
+                action="{{ url_for('auth.logout') }}"
+                style="margin: 0;"
+            >
+
+                {% if csrf_token is defined %}
+
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token() }}"
+                    >
+
+                {% endif %}
+
+                <button
+                    type="submit"
+                    class="logout-btn"
+                >
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN CONTENT
+         ========================= -->
+
+    <main class="container">
+
+        <section class="page-header">
+
+            <h1>
+                TrustVault Admin Activity
+            </h1>
+
+            <p>
+                System-wide audit activity
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             BACK TO DOCUMENTS
+             ========================= -->
+
+        <div class="actions">
+
+            <a
+                href="/documents/"
+                class="back-btn"
+            >
+                ← Back to Documents
+            </a>
+
+        </div>
+
+
+        <!-- =========================
+             ACTIVITY CARD
+             ========================= -->
+
+        <section class="activity-card">
+
+            <div class="card-header">
+
+                <h2 class="card-title">
+                    📊 System Activity
+                </h2>
+
+
+                <!-- Existing route variable -->
+
+                <span class="activity-count">
+
+                    {{ activity_records|length }}
+
+                    Records
+
+                </span>
+
+            </div>
+
+
+            {% if activity_records %}
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    User
+                                </th>
+
+                                <th>
+                                    Document
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                                <th>
+                                    Date &amp; Time
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <!--
+                                IMPORTANT:
+                                Your existing route returns
+                                activity_records as:
+
+                                log
+                                user_email
+                                document_name
+                            -->
+
+                            {% for log, user_email, document_name in activity_records %}
+
+                                <tr>
+
+                                    <td>
+
+                                        <span class="user-email">
+                                            {{ user_email }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="document-name">
+                                            {{ document_name }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {% set action = log.action|string|upper %}
+
+
+                                        {% if action == 'UPLOAD' %}
+
+                                            <span class="action-badge action-upload">
+                                                UPLOAD
+                                            </span>
+
+
+                                        {% elif action == 'SHARE' %}
+
+                                            <span class="action-badge action-share">
+                                                SHARE
+                                            </span>
+
+
+                                        {% elif action == 'REVOKE' %}
+
+                                            <span class="action-badge action-revoke">
+                                                REVOKE
+                                            </span>
+
+
+                                        {% elif action == 'READ' %}
+
+                                            <span class="action-badge action-read">
+                                                READ
+                                            </span>
+
+
+                                        {% elif action == 'DELETE' %}
+
+                                            <span class="action-badge action-delete">
+                                                DELETE
+                                            </span>
+
+
+                                        {% else %}
+
+                                            <span class="action-badge action-default">
+                                                {{ action }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {{ log.timestamp }}
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        📭
+                    </div>
+
+                    <h3>
+                        No activity records found
+                    </h3>
+
+                    <p>
+                        There is currently no audit activity to display.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>TrustVault - Admin Activity</title>
+
+</head>
+
+<body>
+
+    <h1>TrustVault Admin Dashboard</h1>
+
+    <p>
+        Logged in as:
+        <strong>{{ current_user.email }}</strong>
+    </p>
+
+    <hr>
+
+    <h2>Admin Activity View</h2>
+
+    <table border="1" cellpadding="8" cellspacing="0">
+
+        <thead>
+
+            <tr>
+
+                <th>User</th>
+
+                <th>Document</th>
+
+                <th>Action</th>
+
+                <th>Date & Time</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for log in audit_logs %}
+
+            <tr>
+
+                <td>
+                    {{ log.user.email if log.user else "Unknown User" }}
+                </td>
+
+                <td>
+
+                    {% if log.document %}
+
+                        {{ log.document.original_filename }}
+
+                    {% else %}
+
+                        Deleted Document
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+                    <strong>
+                        {{ log.action }}
+                    </strong>
+                </td>
+
+                <td>
+                    {{ log.timestamp }}
+                </td>
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+
+                <td
+                    colspan="4"
+                >
+                    No activity recorded yet.
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <a
+        href="{{ url_for('admin.permissions') }}"
+    >
+        View Permissions
+    </a>
+
+    <br><br>
+
+    <form
+        method="POST"
+        action="{{ url_for('auth.logout') }}"
+    >
+
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token() }}"
+        >
+
+        <button type="submit">
+            Logout
+        </button>
+
+    </form>
+
+</body>
+
+</html>

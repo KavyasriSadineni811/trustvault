@@ -1,0 +1,466 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        TrustVault - Audit History
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ====================================================== */
+
+        .navbar {
+            background-color: #111827;
+            color: white;
+            padding: 18px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .back-button {
+            background-color: #374151;
+            color: white;
+            text-decoration: none;
+
+            padding: 9px 16px;
+
+            border-radius: 5px;
+
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background-color: #4b5563;
+        }
+
+        /* =====================================================
+           MAIN CONTAINER
+        ====================================================== */
+
+        .container {
+            max-width: 1100px;
+
+            margin: 40px auto;
+
+            padding: 0 20px;
+        }
+
+        /* =====================================================
+           PAGE HEADER
+        ====================================================== */
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            margin: 0 0 8px 0;
+
+            font-size: 30px;
+        }
+
+        .document-name {
+            color: #6b7280;
+
+            font-size: 15px;
+        }
+
+        /* =====================================================
+           CARD
+        ====================================================== */
+
+        .card {
+            background-color: white;
+
+            border-radius: 8px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            margin-top: 0;
+
+            margin-bottom: 20px;
+        }
+
+        /* =====================================================
+           TABLE
+        ====================================================== */
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #f3f4f6;
+
+            text-align: left;
+
+            padding: 13px;
+
+            border-bottom:
+                2px solid #d1d5db;
+        }
+
+        td {
+            padding: 13px;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        /* =====================================================
+           ACTION BADGES
+        ====================================================== */
+
+        .action-badge {
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 12px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .action-read {
+            background-color: #dbeafe;
+
+            color: #1e40af;
+        }
+
+        .action-edit {
+            background-color: #fef3c7;
+
+            color: #92400e;
+        }
+
+        .action-delete {
+            background-color: #fee2e2;
+
+            color: #991b1b;
+        }
+
+        .action-default {
+            background-color: #e5e7eb;
+
+            color: #374151;
+        }
+
+        /* =====================================================
+           EMPTY MESSAGE
+        ====================================================== */
+
+        .empty-message {
+            color: #6b7280;
+
+            margin: 0;
+        }
+
+        /* =====================================================
+           USER EMAIL
+        ====================================================== */
+
+        .user-email {
+            font-weight: bold;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+
+            .page-header h2 {
+                font-size: 25px;
+            }
+
+            table {
+                display: block;
+
+                overflow-x: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <nav class="navbar">
+
+        <h1>
+            TrustVault
+        </h1>
+
+
+        <a
+            href="{{ url_for('documents.list_documents') }}"
+            class="back-button"
+        >
+            Back to Documents
+        </a>
+
+    </nav>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="container">
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <div class="page-header">
+
+            <h2>
+                Audit History
+            </h2>
+
+
+            <div class="document-name">
+
+                Document:
+
+                <strong>
+                    {{ document.original_filename }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             AUDIT CARD
+        ================================================== -->
+
+        <section class="card">
+
+            <h3>
+                Access History
+            </h3>
+
+
+            {% if audit_logs %}
+
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                User
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                            <th>
+                                Date & Time
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for log in audit_logs %}
+
+                            <tr>
+
+
+                                <!-- USER -->
+
+                                <td>
+
+                                    {% if log.user %}
+
+                                        <span class="user-email">
+                                            {{ log.user.email }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span>
+                                            Unknown User
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- ACTION -->
+
+                                <td>
+
+                                    {% set action = (
+                                        log.action
+                                        |string
+                                        |upper
+                                    ) %}
+
+
+                                    {% if action == "READ" %}
+
+                                        <span
+                                            class="action-badge action-read"
+                                        >
+                                            READ
+                                        </span>
+
+
+                                    {% elif action == "EDIT" %}
+
+                                        <span
+                                            class="action-badge action-edit"
+                                        >
+                                            EDIT
+                                        </span>
+
+
+                                    {% elif action == "DELETE" %}
+
+                                        <span
+                                            class="action-badge action-delete"
+                                        >
+                                            DELETE
+                                        </span>
+
+
+                                    {% else %}
+
+                                        <span
+                                            class="action-badge action-default"
+                                        >
+                                            {{ action }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- TIMESTAMP -->
+
+                                <td>
+
+                                    {% if log.timestamp %}
+
+                                        {{ log.timestamp.strftime(
+                                            "%Y-%m-%d %H:%M:%S"
+                                        ) }}
+
+                                    {% else %}
+
+                                        Unknown
+
+                                    {% endif %}
+
+                                </td>
+
+
+                            </tr>
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+
+            {% else %}
+
+
+                <p class="empty-message">
+
+                    No audit activity has been recorded
+                    for this document yet.
+
+                </p>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

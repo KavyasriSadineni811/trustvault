@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>TrustVault Admin Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* =========================
+           NAVBAR
+           ========================= */
+
+        .navbar {
+            background: #172554;
+            color: white;
+            padding: 18px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .admin-section {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .admin-email {
+            font-size: 14px;
+        }
+
+        .admin-email strong {
+            color: #bfdbfe;
+        }
+
+        /* =========================
+           LOGOUT
+           ========================= */
+
+        .logout-form {
+            margin: 0;
+        }
+
+        .logout-btn {
+            border: none;
+            border-radius: 7px;
+
+            padding: 9px 17px;
+
+            background: #dc2626;
+            color: white;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+           ========================= */
+
+        .container {
+            max-width: 1200px;
+
+            margin: 40px auto;
+
+            padding: 0 20px;
+        }
+
+        /* =========================
+           WELCOME
+           ========================= */
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            margin: 0 0 8px 0;
+
+            font-size: 30px;
+
+            color: #172554;
+        }
+
+        .welcome p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 15px;
+        }
+
+        /* =========================
+           STAT CARDS
+           ========================= */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.07);
+        }
+
+        .stat-title {
+            color: #64748b;
+
+            font-size: 14px;
+
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+
+            font-weight: bold;
+
+            color: #172554;
+        }
+
+        /* =========================
+           MAIN CARD
+           ========================= */
+
+        .card {
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.07);
+        }
+
+        /* =========================
+           CARD HEADER
+           ========================= */
+
+        .card-header {
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            margin-bottom: 22px;
+        }
+
+        .card-header h2 {
+            margin: 0;
+
+            font-size: 21px;
+
+            color: #172554;
+        }
+
+        /* =========================
+           PERMISSIONS BUTTON
+           ========================= */
+
+        .permissions-btn {
+            text-decoration: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 10px 17px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        .permissions-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* =========================
+           TABLE
+           ========================= */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #eff6ff;
+        }
+
+        th {
+            text-align: left;
+
+            padding: 14px;
+
+            color: #1e3a8a;
+
+            font-size: 14px;
+
+            border-bottom:
+                2px solid #dbeafe;
+        }
+
+        td {
+            padding: 14px;
+
+            font-size: 14px;
+
+            border-bottom:
+                1px solid #e5e7eb;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* =========================
+           ACTION BADGES
+           ========================= */
+
+        .action {
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .upload {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .share {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .revoke {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .read {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .edit {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        .delete {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .denied {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .default-action {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        /* =========================
+           EMPTY STATE
+           ========================= */
+
+        .empty {
+            text-align: center;
+
+            padding: 35px;
+
+            color: #64748b;
+        }
+
+        /* =========================
+           FOOTER
+           ========================= */
+
+        .footer {
+            text-align: center;
+
+            margin-top: 35px;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+        /* =========================
+           RESPONSIVE
+           ========================= */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                padding: 16px 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+
+                align-items: flex-start;
+            }
+
+            .admin-section {
+                width: 100%;
+
+                justify-content:
+                    space-between;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .card-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION BAR
+         ===================================================== -->
+
+    <div class="navbar">
+
+        <div class="brand">
+
+            🔐 TrustVault
+
+        </div>
+
+
+        <div class="admin-section">
+
+            <div class="admin-email">
+
+                Logged in as:
+
+                <strong>
+                    {{ current_user.email }}
+                </strong>
+
+            </div>
+
+
+            <!-- IMPORTANT:
+                 Logout uses POST because the logout
+                 route accepts POST.
+            -->
+
+            <form
+                method="POST"
+                action="{{ url_for('auth.logout') }}"
+                class="logout-form"
+            >
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+
+                <button
+                    type="submit"
+                    class="logout-btn"
+                >
+
+                    Logout
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <div class="container">
+
+
+        <!-- =================================================
+             WELCOME
+             ================================================= -->
+
+        <div class="welcome">
+
+            <h1>
+                TrustVault Admin Dashboard
+            </h1>
+
+            <p>
+                Monitor document activity and manage
+                TrustVault permissions.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             STAT CARDS
+             ================================================= -->
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-title">
+                    Total Activity
+                </div>
+
+                <div class="stat-value">
+                    {{ audit_logs|length }}
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-title">
+                    Current Admin
+                </div>
+
+                <div class="stat-value"
+                     style="font-size:18px;">
+
+                    Admin
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-title">
+                    System Status
+                </div>
+
+                <div
+                    class="stat-value"
+                    style="
+                        color:#16a34a;
+                        font-size:20px;
+                    "
+                >
+
+                    ● Active
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             ADMIN ACTIVITY VIEW
+             ================================================= -->
+
+        <div class="card">
+
+
+            <div class="card-header">
+
+                <h2>
+                    📊 Admin Activity View
+                </h2>
+
+
+                <a
+                    href="{{ url_for('admin.permissions_view') }}"
+                    class="permissions-btn"
+                >
+
+                    🔑 View Permissions
+
+                </a>
+
+            </div>
+
+
+            <div class="table-container">
+
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                User
+                            </th>
+
+                            <th>
+                                Document
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                            <th>
+                                Date & Time
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for log in audit_logs %}
+
+
+                        <tr>
+
+
+                            <!-- USER -->
+
+                            <td>
+
+                                {{ log.user.email }}
+
+                            </td>
+
+
+                            <!-- DOCUMENT -->
+
+                            <td>
+
+                                {{ log.document.original_filename }}
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            <td>
+
+
+                                {% if log.action == "UPLOAD" %}
+
+                                    <span
+                                        class="action upload"
+                                    >
+                                        UPLOAD
+                                    </span>
+
+
+                                {% elif log.action == "SHARE" %}
+
+                                    <span
+                                        class="action share"
+                                    >
+                                        SHARE
+                                    </span>
+
+
+                                {% elif log.action == "REVOKE" %}
+
+                                    <span
+                                        class="action revoke"
+                                    >
+                                        REVOKE
+                                    </span>
+
+
+                                {% elif log.action == "READ" %}
+
+                                    <span
+                                        class="action read"
+                                    >
+                                        READ
+                                    </span>
+
+
+                                {% elif log.action == "EDIT" %}
+
+                                    <span
+                                        class="action edit"
+                                    >
+                                        EDIT
+                                    </span>
+
+
+                                {% elif log.action == "DELETE" %}
+
+                                    <span
+                                        class="action delete"
+                                    >
+                                        DELETE
+                                    </span>
+
+
+                                {% elif log.action == "DENIED" %}
+
+                                    <span
+                                        class="action denied"
+                                    >
+                                        DENIED
+                                    </span>
+
+
+                                {% else %}
+
+                                    <span
+                                        class="action default-action"
+                                    >
+
+                                        {{ log.action }}
+
+                                    </span>
+
+                                {% endif %}
+
+
+                            </td>
+
+
+                            <!-- DATE -->
+
+                            <td>
+
+                                {{ log.timestamp }}
+
+                            </td>
+
+
+                        </tr>
+
+
+                        {% else %}
+
+
+                        <tr>
+
+                            <td
+                                colspan="4"
+                                class="empty"
+                            >
+
+                                No activity records found.
+
+                            </td>
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <div class="footer">
+
+            TrustVault • Secure Document Sharing
+            & Audit System
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

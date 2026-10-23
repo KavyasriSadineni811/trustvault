@@ -1,0 +1,936 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>TrustVault - My Documents</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background-color: #111827;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .logout-button {
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-button:hover {
+            background-color: #b91c1c;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .upload-button {
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .upload-button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .flash {
+            padding: 13px 16px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .flash.success {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .flash.danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .flash.warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .flash.info {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #f3f4f6;
+            text-align: left;
+            padding: 13px;
+            border-bottom: 2px solid #d1d5db;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .action-link {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 6px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
+
+        .delete-button {
+            display: inline-block;
+            background: none;
+            border: none;
+            color: #dc2626;
+            cursor: pointer;
+            font-weight: bold;
+            padding: 0;
+            margin-right: 10px;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .delete-button:hover {
+            text-decoration: underline;
+            color: #b91c1c;
+        }
+
+        .revoke-button {
+            background: none;
+            border: none;
+            color: #dc2626;
+            cursor: pointer;
+            font-weight: bold;
+            padding: 0;
+            margin-left: 8px;
+        }
+
+        .revoke-button:hover {
+            text-decoration: underline;
+        }
+
+        .empty-message {
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .recipient-list {
+            margin: 8px 0 0 0;
+            padding-left: 20px;
+        }
+
+        .recipient-list li {
+            margin-bottom: 8px;
+        }
+
+        .permission-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .permission-read {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .permission-edit {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .filter-card {
+            margin-bottom: 30px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: bold;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 9px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .search-button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .clear-button {
+            background-color: #6b7280;
+            color: white;
+            text-decoration: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .clear-button:hover {
+            background-color: #4b5563;
+        }
+
+        .owner-label {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        @media (max-width: 850px) {
+
+            .filter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- =======================================================
+         NAVIGATION
+    ======================================================== -->
+
+    <nav class="navbar">
+
+        <h1>TrustVault</h1>
+
+        <form
+            method="POST"
+            action="{{ url_for('auth.logout') }}"
+        >
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+            >
+
+            <button
+                type="submit"
+                class="logout-button"
+            >
+                Logout
+            </button>
+
+        </form>
+
+    </nav>
+
+
+    <!-- =======================================================
+         MAIN CONTENT
+    ======================================================== -->
+
+    <main class="container">
+
+
+        <!-- ===================================================
+             PAGE HEADER
+        ==================================================== -->
+
+        <div class="page-header">
+
+            <h2>My Documents</h2>
+
+            <a
+                href="{{ url_for('documents.upload') }}"
+                class="upload-button"
+            >
+                + Upload Document
+            </a>
+
+        </div>
+
+
+        <!-- ===================================================
+             FLASH MESSAGES
+        ==================================================== -->
+
+        {% with messages = get_flashed_messages(
+            with_categories=true
+        ) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- ===================================================
+             SEARCH AND FILTER
+        ==================================================== -->
+
+        <section class="card filter-card">
+
+            <h3>Search & Filter Documents</h3>
+
+            <form
+                method="GET"
+                action="{{ url_for('documents.list_documents') }}"
+            >
+
+                <div class="filter-grid">
+
+
+                    <!-- DOCUMENT NAME -->
+
+                    <div class="filter-group">
+
+                        <label for="q">
+                            Document Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="q"
+                            name="q"
+                            value="{{ search_query }}"
+                            placeholder="Search by filename"
+                        >
+
+                    </div>
+
+
+                    <!-- OWNER -->
+
+                    <div class="filter-group">
+
+                        <label for="owner">
+                            Owner
+                        </label>
+
+                        <input
+                            type="text"
+                            id="owner"
+                            name="owner"
+                            value="{{ owner_query }}"
+                            placeholder="Owner email"
+                        >
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="filter-group">
+
+                        <label for="category">
+                            Category
+                        </label>
+
+                        <select
+                            id="category"
+                            name="category"
+                        >
+
+                            <option value="">
+                                All Categories
+                            </option>
+
+                            {% for category in categories %}
+
+                                <option
+                                    value="{{ category }}"
+                                    {% if category_query == category %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ category }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- UPLOAD DATE FROM -->
+
+                    <div class="filter-group">
+
+                        <label for="date_from">
+                            Upload Date From
+                        </label>
+
+                        <input
+                            type="date"
+                            id="date_from"
+                            name="date_from"
+                            value="{{ date_from }}"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="filter-buttons">
+
+                    <button
+                        type="submit"
+                        class="search-button"
+                    >
+                        Search
+                    </button>
+
+                    <a
+                        href="{{ url_for('documents.list_documents') }}"
+                        class="clear-button"
+                    >
+                        Clear Filters
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- ===================================================
+             OWNED DOCUMENTS
+        ==================================================== -->
+
+        <section class="card">
+
+            <h3>Documents You Own</h3>
+
+            {% if documents %}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Document
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Uploaded
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for document in documents %}
+
+                            <!-- DOCUMENT ROW -->
+
+                            <tr>
+
+                                <td>
+
+                                    <strong>
+                                        {{ document.original_filename }}
+                                    </strong>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span>
+                                        {{ document.category }}
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ document.created_at.strftime(
+                                        "%Y-%m-%d %H:%M"
+                                    ) }}
+
+                                </td>
+
+
+                                <td>
+
+                                    <!-- DOWNLOAD -->
+
+                                    <a
+                                        class="action-link"
+                                        href="{{ url_for(
+                                            'documents.download',
+                                            document_id=document.id
+                                        ) }}"
+                                    >
+                                        Download
+                                    </a>
+
+
+                                    <!-- SHARE -->
+
+                                    <a
+                                        class="action-link"
+                                        href="{{ url_for(
+                                            'documents.share',
+                                            document_id=document.id
+                                        ) }}"
+                                    >
+                                        Share
+                                    </a>
+
+
+                                    <!-- EDIT -->
+
+                                    <a
+                                        class="action-link"
+                                        href="/documents/edit/{{ document.id }}"
+                                    >
+                                        Edit
+                                    </a>
+
+
+                                    <!-- AUDIT HISTORY -->
+
+                                    <a
+                                        class="action-link"
+                                        href="{{ url_for(
+                                            'documents.audit_history',
+                                            document_id=document.id
+                                        ) }}"
+                                    >
+                                        Audit History
+                                    </a>
+
+
+                                    <!-- DELETE -->
+
+                                    <form
+                                        method="POST"
+                                        action="/documents/delete/{{ document.id }}"
+                                        style="display:inline;"
+                                        onsubmit="return confirm(
+                                            'Are you sure you want to permanently delete this document? This action cannot be undone.'
+                                        );"
+                                    >
+
+                                        <input
+                                            type="hidden"
+                                            name="csrf_token"
+                                            value="{{ csrf_token() }}"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="delete-button"
+                                        >
+                                            Delete
+                                        </button>
+
+                                    </form>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- SHARED USERS -->
+
+                            {% if document_permissions.get(document.id) %}
+
+                                <tr>
+
+                                    <td colspan="4">
+
+                                        <strong>
+                                            Shared with:
+                                        </strong>
+
+
+                                        <ul class="recipient-list">
+
+                                            {% for permission in document_permissions[document.id] %}
+
+                                                <li>
+
+                                                    {{ permission.user.email }}
+
+
+                                                    {% if permission.permission == "READ" %}
+
+                                                        <span
+                                                            class="permission-badge permission-read"
+                                                        >
+                                                            READ
+                                                        </span>
+
+                                                    {% elif permission.permission == "EDIT" %}
+
+                                                        <span
+                                                            class="permission-badge permission-edit"
+                                                        >
+                                                            EDIT
+                                                        </span>
+
+                                                    {% else %}
+
+                                                        <span
+                                                            class="permission-badge"
+                                                        >
+                                                            {{ permission.permission }}
+                                                        </span>
+
+                                                    {% endif %}
+
+
+                                                    <form
+                                                        method="POST"
+                                                        action="{{ url_for(
+                                                            'documents.revoke',
+                                                            document_id=document.id,
+                                                            user_id=permission.user_id
+                                                        ) }}"
+                                                        style="display:inline;"
+                                                        onsubmit="return confirm(
+                                                            'Are you sure you want to revoke this user access?'
+                                                        );"
+                                                    >
+
+                                                        <input
+                                                            type="hidden"
+                                                            name="csrf_token"
+                                                            value="{{ csrf_token() }}"
+                                                        >
+
+
+                                                        <button
+                                                            type="submit"
+                                                            class="revoke-button"
+                                                        >
+                                                            Revoke
+                                                        </button>
+
+                                                    </form>
+
+                                                </li>
+
+                                            {% endfor %}
+
+                                        </ul>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            {% else %}
+
+                <p class="empty-message">
+                    No documents matched your search/filter.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- ===================================================
+             SHARED WITH ME
+        ==================================================== -->
+
+        <section class="card">
+
+            <h3>Documents Shared With Me</h3>
+
+            {% if shared_documents %}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Document
+                            </th>
+
+                            <th>
+                                Owner
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for document in shared_documents %}
+
+                            <tr>
+
+                                <td>
+
+                                    <strong>
+                                        {{ document.original_filename }}
+                                    </strong>
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ document.owner.email }}
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ document.category }}
+
+                                </td>
+
+
+                                <td>
+
+                                    <!-- DOWNLOAD -->
+
+                                    <a
+                                        class="action-link"
+                                        href="{{ url_for(
+                                            'documents.download',
+                                            document_id=document.id
+                                        ) }}"
+                                    >
+                                        Download
+                                    </a>
+
+
+                                    <!-- EDIT IF USER HAS EDIT PERMISSION -->
+
+                                    {% set permission = document_permissions.get(document.id) %}
+
+                                    {% if permission and permission.permission == "EDIT" %}
+
+                                        <a
+                                            class="action-link"
+                                            href="/documents/edit/{{ document.id }}"
+                                        >
+                                            Edit
+                                        </a>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            {% else %}
+
+                <p class="empty-message">
+                    No documents have been shared with you.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+    </main>
+
+</body>
+
+</html>

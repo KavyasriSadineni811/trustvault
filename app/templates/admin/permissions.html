@@ -1,0 +1,769 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>TrustVault - Permissions</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            background: #f4f7fb;
+            color: #172b4d;
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .topbar {
+            height: 82px;
+
+            background: #172554;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 46px;
+
+            box-shadow:
+                0 3px 12px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            color: white;
+
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+
+        .brand-icon {
+            font-size: 34px;
+        }
+
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+
+            color: white;
+            font-size: 16px;
+        }
+
+
+        .user-area strong {
+            color: #dbeafe;
+        }
+
+
+        .logout-btn {
+            border: none;
+
+            background: #ef2b2d;
+            color: white;
+
+            padding: 13px 24px;
+
+            border-radius: 9px;
+
+            font-size: 16px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .logout-btn:hover {
+            background: #d91f21;
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+           ===================================================== */
+
+        .container {
+            width: min(1480px, 92%);
+
+            margin: 50px auto;
+        }
+
+
+        .page-heading {
+            margin-bottom: 30px;
+        }
+
+
+        .page-heading h1 {
+            font-size: 38px;
+
+            color: #17356f;
+
+            margin-bottom: 8px;
+        }
+
+
+        .page-heading p {
+            color: #60708a;
+
+            font-size: 18px;
+        }
+
+
+        /* =====================================================
+           CARD
+           ===================================================== */
+
+        .card {
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 30px 32px;
+
+            box-shadow:
+                0 8px 25px rgba(24, 45, 78, 0.08);
+        }
+
+
+        .card-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .card-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 28px;
+
+            color: #17356f;
+
+            font-weight: 700;
+        }
+
+
+        .card-title-icon {
+            font-size: 27px;
+        }
+
+
+        /* =====================================================
+           BACK BUTTON
+           ===================================================== */
+
+        .back-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            text-decoration: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 12px 20px;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .back-btn:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           TABLE
+           ===================================================== */
+
+        .table-wrapper {
+            overflow-x: auto;
+
+            border-radius: 12px;
+
+            border: 1px solid #e2e8f0;
+        }
+
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            background: white;
+        }
+
+
+        thead {
+            background: #edf4ff;
+        }
+
+
+        th {
+            padding: 17px 20px;
+
+            text-align: left;
+
+            color: #173f7a;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            border-bottom:
+                1px solid #d6e4f7;
+        }
+
+
+        td {
+            padding: 17px 20px;
+
+            font-size: 15px;
+
+            color: #253858;
+
+            border-bottom:
+                1px solid #e7edf5;
+        }
+
+
+        tbody tr {
+            transition:
+                background 0.2s ease;
+        }
+
+
+        tbody tr:hover {
+            background: #f8fbff;
+        }
+
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* =====================================================
+           USER
+           ===================================================== */
+
+        .user-email {
+            font-weight: 600;
+
+            color: #17356f;
+        }
+
+
+        /* =====================================================
+           DOCUMENT
+           ===================================================== */
+
+        .document-name {
+            font-weight: 500;
+
+            color: #334e68;
+        }
+
+
+        /* =====================================================
+           PERMISSION BADGE
+           ===================================================== */
+
+        .permission-badge {
+            display: inline-block;
+
+            padding: 7px 15px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        .permission-read {
+            background: #dcfce7;
+
+            color: #15803d;
+        }
+
+
+        .permission-edit {
+            background: #dbeafe;
+
+            color: #1d4ed8;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+           ===================================================== */
+
+        .empty-state {
+            text-align: center;
+
+            padding: 55px 20px;
+
+            color: #718096;
+        }
+
+
+        .empty-icon {
+            font-size: 48px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .empty-state h3 {
+            color: #334e68;
+
+            font-size: 20px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .empty-state p {
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .footer-actions {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-top: 25px;
+        }
+
+
+        .footer-note {
+            color: #718096;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 768px) {
+
+            .topbar {
+                height: auto;
+
+                padding: 18px 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+
+                align-items: flex-start;
+            }
+
+
+            .brand {
+                font-size: 25px;
+            }
+
+
+            .user-area {
+                width: 100%;
+
+                justify-content: space-between;
+
+                gap: 10px;
+            }
+
+
+            .container {
+                width: 94%;
+
+                margin: 30px auto;
+            }
+
+
+            .page-heading h1 {
+                font-size: 30px;
+            }
+
+
+            .card {
+                padding: 22px 18px;
+            }
+
+
+            .card-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 18px;
+            }
+
+
+            .card-title {
+                font-size: 23px;
+            }
+
+
+            th,
+            td {
+                padding: 14px 12px;
+
+                font-size: 14px;
+            }
+
+
+            .footer-actions {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         TOP NAVIGATION
+         ===================================================== -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <span class="brand-icon">
+                🔐
+            </span>
+
+            <span>
+                TrustVault
+            </span>
+
+        </div>
+
+
+        <div class="user-area">
+
+            <span>
+                Logged in as:
+                <strong>
+                    {{ current_user.email }}
+                </strong>
+            </span>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('auth.logout') }}"
+                style="margin: 0;"
+            >
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+
+                <button
+                    type="submit"
+                    class="logout-btn"
+                >
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="container">
+
+
+        <!-- PAGE HEADING -->
+
+        <section class="page-heading">
+
+            <h1>
+                TrustVault Admin Dashboard
+            </h1>
+
+            <p>
+                Manage document permissions and monitor
+                authorized access across TrustVault.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PERMISSIONS CARD
+             ================================================= -->
+
+        <section class="card">
+
+
+            <div class="card-header">
+
+                <div class="card-title">
+
+                    <span class="card-title-icon">
+                        🔑
+                    </span>
+
+                    <span>
+                        Admin Permission View
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('documents.admin_activity') }}"
+                    class="back-btn"
+                >
+                    📊 View Activity
+                </a>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PERMISSIONS TABLE
+                 ================================================= -->
+
+            {% if permissions %}
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    User
+                                </th>
+
+                                <th>
+                                    Document
+                                </th>
+
+                                <th>
+                                    Permission
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for permission in permissions %}
+
+                                <tr>
+
+                                    <td>
+
+                                        <span class="user-email">
+
+                                            {{ permission.user.email }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="document-name">
+
+                                            {{ permission.document.original_filename }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {% if permission.permission|string|upper == "EDIT" %}
+
+                                            <span
+                                                class="permission-badge permission-edit"
+                                            >
+                                                EDIT
+                                            </span>
+
+                                        {% else %}
+
+                                            <span
+                                                class="permission-badge permission-read"
+                                            >
+                                                READ
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- =================================================
+                     EMPTY STATE
+                     ================================================= -->
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        🔒
+                    </div>
+
+                    <h3>
+                        No Active Permissions
+                    </h3>
+
+                    <p>
+                        There are currently no document permissions
+                        assigned in TrustVault.
+                    </p>
+
+                </div>
+
+
+            {% endif %}
+
+
+
+            <!-- =================================================
+                 FOOTER ACTIONS
+                 ================================================= -->
+
+            <div class="footer-actions">
+
+                <span class="footer-note">
+                    🔐 Only active document permissions are shown.
+                </span>
+
+
+                <a
+                    href="{{ url_for('admin.dashboard') }}"
+                    class="back-btn"
+                >
+                    ← Back to Dashboard
+                </a>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>
